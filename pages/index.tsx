@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 
 import Head from "next/head";
 import type { NextPage } from "next";
-import Script from "next/script";
 import Typewriter from "typewriter-effect";
 import TypewriterComponent from "typewriter-effect";
 
@@ -87,18 +86,6 @@ const Home: NextPage = () => {
                 })
             );
         }, 1000);
-
-        // after 28feb2023 and time 12:00:00 am make the visible false
-        const date = new Date();
-        if (
-            date.getFullYear() > 2023 ||
-            (date.getFullYear() === 2023 &&
-                date.getMonth() > 1 &&
-                date.getDate() > 28)
-        ) {
-            setVisible(false);
-        }
-        return () => clearInterval(interval);
     }, []);
 
     // time left
@@ -146,62 +133,73 @@ const Home: NextPage = () => {
             </Head>
 
             {visible ? (
-                <div
-                    className={`flex h-[90vh] items-center justify-center flex-col gap-8`}
-                >
-                    <h1 className="text-center text-4xl text-blue-500 font-bold font-shantell my-5">
-                        {date}
-                    </h1>
-                    {/* display date and month along with hh mm ss */}
-                    <h1 className="text-center text-6xl font-bold my-5 text-indigo-500 font-roboto-slab">
-                        {time}
-                    </h1>
+                <div className="border-double border-[5px] p-1 border-violet-400">
+                    <div
+                        className={`flex flex-1 h-[85vh] items-center justify-center flex-col gap-8 border-double border-[5px] border-violet-400 m-2`}
+                    >
+                        <h1 className="text-center text-4xl text-blue-500 font-bold font-shantell my-5">
+                            {date}
+                        </h1>
+                        {/* display date and month along with hh mm ss */}
+                        <h1 className="text-center text-6xl font-bold my-5 text-indigo-500 font-roboto-slab">
+                            {time}
+                        </h1>
 
-                    {/* display time left */}
-                    <div className="text-center text-4xl  font-bold gap-4">
-                        {/* days left */}
-                        <p className="text-amber-500">
-                            {timeLeft > 0 && (
-                                <>
-                                    <h1 className="text-4xl md:text-5xl sm:text-3xl font-serif text-center inline">
-                                        {Math.floor(
-                                            timeLeft / (1000 * 60 * 60 * 24)
-                                        ) + " Days "}
-                                        {Math.floor(
-                                            (timeLeft / (1000 * 60 * 60)) % 24
-                                        ) + " Hours "}
-                                        {Math.floor(
-                                            (timeLeft / (1000 * 60)) % 60
-                                        ) + " Minutes "}
-                                        {Math.floor((timeLeft / 1000) % 60) +
-                                            " Seconds "}
-                                    </h1>
-                                </>
-                            )}
-                        </p>
-                        <p>
-                            {timeLeft <= 0 && (
-                                <>
-                                    <h1 className="text-center text-6xl text-pink-400 font-bold font-mynerve my-10">
-                                        Happy Birthday Sonali
-                                    </h1>
-                                    <h1 className="text-4xl md:text-5xl sm:text-3xl font-apple text-center text-violet-400 inline-block mt-5">
-                                        <TypewriterComponent
-                                            onInit={(typewriter) => {
-                                                typewriter
-                                                    .typeString("<Loading ")
-                                                    .typeString(" />")
-                                                    .pauseFor(500)
-                                                    .callFunction(() => {
-                                                        setVisible(true); // make the visible false
-                                                    })
-                                                    .start();
-                                            }}
-                                        />
-                                    </h1>
-                                </>
-                            )}
-                        </p>
+                        {/* display time left */}
+                        <div className="text-center text-4xl  font-bold gap-4">
+                            {/* days left */}
+                            <div className="text-amber-500">
+                                {timeLeft > 0 && (
+                                    <>
+                                        <h1 className="text-gray-800 mb-2">
+                                            Time Left:{" "}
+                                        </h1>
+                                        <h1 className="text-4xl md:text-5xl sm:text-3xl font-serif text-center inline">
+                                            {Math.floor(
+                                                timeLeft / (1000 * 60 * 60 * 24)
+                                            ) + " Days "}
+                                            {Math.floor(
+                                                (timeLeft / (1000 * 60 * 60)) %
+                                                    24
+                                            ) + " Hours "}
+                                            {Math.floor(
+                                                (timeLeft / (1000 * 60)) % 60
+                                            ) + " Minutes "}
+                                            {Math.floor(
+                                                (timeLeft / 1000) % 60
+                                            ) + " Seconds "}
+                                        </h1>
+                                    </>
+                                )}
+                            </div>
+                            <div>
+                                {timeLeft <= 0 && (
+                                    <>
+                                        <h1 className="text-center text-6xl text-pink-400 font-bold font-mynerve my-10">
+                                            Happy Birthday Sonali
+                                        </h1>
+                                        <h1 className="text-4xl md:text-5xl sm:text-3xl font-apple text-center text-violet-400 inline-block mt-5">
+                                            <TypewriterComponent
+                                                onInit={(typewriter) => {
+                                                    typewriter
+                                                        .typeString("Loading ")
+                                                        .pauseFor(300)
+                                                        .typeString(" Your ")
+                                                        .pauseFor(300)
+                                                        .typeString("Birthday")
+                                                        .typeString(". . . . .")
+                                                        .pauseFor(300)
+                                                        .callFunction(() => {
+                                                            setVisible(false); // make the visible false
+                                                        })
+                                                        .start();
+                                                }}
+                                            />
+                                        </h1>
+                                    </>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : (
@@ -259,7 +257,7 @@ const Home: NextPage = () => {
                                                                 '<span style="color:rgb(251 146 60)">Enjoy Your Day!</span> <br />'
                                                             )
                                                             .typeString(
-                                                                '<span style="color:rgb(251 146 60); font-size:2rem;">Keep Smiling ;)</span>'
+                                                                '<span style="color:#a384ff; font-size:2rem;">Keep Smiling :)</span>'
                                                             )
                                                             .callFunction(
                                                                 () => {
@@ -361,6 +359,21 @@ const Home: NextPage = () => {
                         L A S T L Y . . .
                     </h1>
 
+                    {/* video */}
+                    <div
+                        className={`${
+                            lastMsg ? "flex" : "hidden"
+                        } items-center justify-center`}
+                    >
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            className="h-96 border-2 border-dashed p-3 border-violet-400 rounded-lg"
+                        >
+                            <source src="/vid.mp4" type="video/mp4" />
+                        </video>
+                    </div>
                     <h1 className="text-2xl md:text-3xl text-center font-medium my-10">
                         <Typewriter
                             options={{
